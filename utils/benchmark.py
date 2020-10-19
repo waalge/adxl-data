@@ -22,11 +22,13 @@ def make_test_train_split():
     """
     filenames = get_filenames()
     x, y = zip(*[f.split("_") for f in filenames])
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=345)
-    df = pd.DataFrame({"timestamp" : x_train, "pwm" : y_train})
+    x_train, x_test, y_train, y_test = train_test_split(
+        x, y, test_size=0.2, random_state=345
+    )
+    df = pd.DataFrame({"timestamp": x_train, "pwm": y_train})
     path_to_file = os.path.join(DATA_DIR, "train.csv")
     df.to_csv(path_to_file, index=False)
-    df = pd.DataFrame({"timestamp" : x_test, "pwm" : y_test})
+    df = pd.DataFrame({"timestamp": x_test, "pwm": y_test})
     path_to_file = os.path.join(DATA_DIR, "test.csv")
     df.to_csv(path_to_file, index=False)
 
@@ -45,7 +47,7 @@ def benchmark_csv(yhat):
     """
     path_to_file = os.path.join(DATA_DIR, "test.csv")
     y = pd.read_csv(path_to_file)["pwm"].to_numpy()
-    return sum(1/ (1 + (y - yhat)**2))/y.shape[0]
+    return sum(1 / (1 + (y - yhat) ** 2)) / y.shape[0]
 
 
 def demo_benchmark():
@@ -54,10 +56,11 @@ def demo_benchmark():
     """
     y_random = np.random.randint(0, 255, 2000)
     print("Benchmark y_random : ", benchmark_csv(y_random))
-    y_const = np.array([127]*2000)
+    y_const = np.array([127] * 2000)
     print("Benchmark y_const  : ", benchmark_csv(y_const))
 
+
 if __name__ == "__main__":
-    #make_test_train_split
+    # make_test_train_split
     make_test_train_split()
     demo_benchmark()
