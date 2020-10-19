@@ -2,7 +2,6 @@
 Set up and provide benchmarking.
 """
 import os
-import ctypes
 
 import numpy as np
 import pandas as pd
