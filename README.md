@@ -31,8 +31,11 @@ accelerometer read rate but this was very poorly implemented and maybe a source 
 ```
 The motor output is set to off, and a short time period ellapses to ensure the motor is off before the next sample.
 
-## TODOs
 
-1. Partition of test set with specified seed.
-2. Setup evaluation metric.
-3. Provide baseline model.
+## Utils
+
+The `utils/benchmark.py` file contains the functionality to generate the test/ train split, and provide the benchmark score on the test set.
+
+#TODOs
+
+1. Provide baseline model.
