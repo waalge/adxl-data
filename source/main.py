@@ -22,22 +22,22 @@ if __name__ == "__main__":
     model = Sequential(
         (
             model_input,
-            Dense(1024, activation="relu"), 
             Dense(256, activation="relu"), 
+            Dense(32, activation="relu"), 
             Dense(1, activation="relu"),
         )
     )
 
     model.summary()
 
-    import pdb;pdb.set_trace()
+    # import pdb;pdb.set_trace()
     model.compile(
-        optimizer="adam", 
-        loss= tf.keras.losses.MeanSquaredError(),
+        optimizer="Adagrad", 
+        loss=tf.keras.losses.MeanSquaredError(),
         metrics=["accuracy"]
     )
 
-    model.fit(train_accel_values, train_pwm_values)
+    model.fit(train_accel_values, train_pwm_values, epochs=10000)
     
 
     import pdb;pdb.set_trace()
