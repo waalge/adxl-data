@@ -12,6 +12,8 @@ if __name__ == "__main__":
     # pwm_values, accel_readings = data_io.get_data_arrays('../data/raw')
     train_pwm_values, train_accel_values, test_pwm_values, test_accel_values = data_io.get_datasets("../data/raw")
     
+
+    import pdb; pdb.set_trace()
     train_accel_values = train_accel_values / 255.0
     train_accel_values = np.abs(np.fft.rfft(train_accel_values, axis=1))
     train_accel_values = np.sum(train_accel_values, axis=-1)
