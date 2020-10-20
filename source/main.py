@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     # import pdb;pdb.set_trace()
     model.compile(
-        optimizer="Adagrad", 
+        optimizer="adam", 
         loss=tf.keras.losses.MeanSquaredError(),
         metrics=["accuracy"]
     )
