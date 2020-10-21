@@ -6,38 +6,7 @@ from tensorflow.keras import Model, Sequential, Input
 from tensorflow.keras.layers import Activation, Dense, Embedding, GlobalAveragePooling1D, Lambda, Flatten
 from tensorflow.keras.layers.experimental.preprocessing import TextVectorization
 
-
-def histedges_equalN(x, nbin):
-    # https://stackoverflow.com/questions/39418380/histogram-with-equal-number-of-points-in-each-bin
-    npt = len(x)
-    return np.interp(np.linspace(0, npt, nbin + 1),
-        np.arange(npt),
-        np.sort(x)
-    )
-
-
-class Preproccessor:
-    def __init__(self, data, nbins=512):
-        self.nbins = nbins
-        data = self._reduction(data)
-        _, self.bins = np.histogram(data.ravel(), bins=histedges_equalN(data.ravel(), nbins))
-
-    def _reduction(self, data):
-        data = np.square(data)
-        data = np.sum(data, axis=-1)
-        return data
-    
-    def __call__(self, data):
-        data = self._reduction(data)
-        hist, _ = np.histogram(data.ravel(), bins=self.bins)
-        return hist
-
-    def process_block(self, data):
-        ndata = data.shape[0]
-        out = np.zeros((data.shape[0], self.nbins), dtype='int32')
-        for rowx in range(ndata):
-            out[rowx, :] = self(data[rowx, : , :])
-        return out
+from preprocessing import PreproccessorHist
 
 
 if __name__ == "__main__":
@@ -45,8 +14,8 @@ if __name__ == "__main__":
     # pwm_values, accel_readings = data_io.get_data_arrays('../data/raw')
     train_pwm_values, train_accel_values, test_pwm_values, test_accel_values = data_io.get_datasets("../data/raw")
     
-    nbins = 1024
-    preprocessor = Preproccessor(train_accel_values, nbins)
+    nbins = 256
+    preprocessor = PreproccessorHist(train_accel_values, nbins)
     
     pp_train_accel_values = preprocessor.process_block(train_accel_values)
     pp_test_accel_values = preprocessor.process_block(test_accel_values)
@@ -56,8 +25,8 @@ if __name__ == "__main__":
     model = Sequential(
         (
             model_input,
-            Dense(512, activation="relu"), 
-            Dense(256, activation="relu"), 
+            Dense(256, activation="softmax"), 
+            Dense(32, activation="relu"), 
             Dense(1, activation="relu"),
         )
     )
