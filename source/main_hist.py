@@ -1,3 +1,10 @@
+"""
+Run with:
+
+    python main_hist.py
+
+"""
+
 # Environment packages
 import numpy as np
 import tensorflow as tf
