@@ -1,11 +1,6 @@
 import numpy as np
 import data_io
 import ctypes
-import tensorflow as tf
-from tensorflow.keras import Model, Sequential, Input
-from tensorflow.keras.layers import Activation, Dense, Embedding, GlobalAveragePooling1D, Lambda, Flatten
-from tensorflow.keras.layers.experimental.preprocessing import TextVectorization
-
 
 def histedges_equalN(x, nbin):
     # https://stackoverflow.com/questions/39418380/histogram-with-equal-number-of-points-in-each-bin

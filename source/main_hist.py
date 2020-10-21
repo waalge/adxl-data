@@ -7,7 +7,7 @@ from tensorflow.keras.layers import Activation, Dense, Embedding, GlobalAverageP
 from tensorflow.keras.layers.experimental.preprocessing import TextVectorization
 
 from preprocessing import PreproccessorHist
-
+import plotille
 
 if __name__ == "__main__":
 
@@ -25,7 +25,7 @@ if __name__ == "__main__":
     model = Sequential(
         (
             model_input,
-            Dense(256, activation="softmax"), 
+            Dense(64, activation="relu"), 
             Dense(32, activation="relu"), 
             Dense(1, activation="relu"),
         )
@@ -40,7 +40,12 @@ if __name__ == "__main__":
         metrics=["accuracy"]
     )
 
-    model.fit(pp_train_accel_values, train_pwm_values, epochs=10000, validation_data=(pp_test_accel_values, test_pwm_values))
+    model.fit(pp_train_accel_values, train_pwm_values, epochs=30, validation_data=(pp_test_accel_values, test_pwm_values))
     
+    predict_pwm = model.predict(pp_test_accel_values)[:,0]
+    predict_diff = np.abs(predict_pwm - test_pwm_values)
+
+    print(np.min(predict_diff), np.mean(predict_diff), np.max(predict_diff))
+    print(plotille.hist(predict_diff))
 
     import pdb;pdb.set_trace()
