@@ -1,7 +1,9 @@
 """
-Run with:
+Run with,
 
     python main_hist.py
+
+from inside the "source" directory.
 
 """
 
