@@ -1,6 +1,6 @@
 import os
 
-from source import main_hist
+from models.v1 import main_hist
 
 from utils import data_io
 

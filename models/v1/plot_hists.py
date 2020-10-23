@@ -29,10 +29,10 @@ if __name__ == "__main__":
 
     bars = midpoints(preprocessor.bins)
     widths = widths(preprocessor.bins)
-    
+
     side_length = ceil(sqrt(num_pwm_values))
     fig, ax = plt.subplots(side_length, side_length, figsize=(4 * side_length, 4 * side_length))
-    
+
     ax_indices = tuple(product(range(side_length), range(side_length)))
 
     for plotx, pwm_value in enumerate(pwm_plot_values):

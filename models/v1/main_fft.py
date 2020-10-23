@@ -11,9 +11,8 @@ if __name__ == "__main__":
 
     # pwm_values, accel_readings = data_io.get_data_arrays('../data/raw')
     train_pwm_values, train_accel_values, test_pwm_values, test_accel_values = data_io.get_datasets("../data/raw")
-    
 
-    import pdb; pdb.set_trace()
+
     train_accel_values = train_accel_values / 255.0
     train_accel_values = np.abs(np.fft.rfft(train_accel_values, axis=1))
     train_accel_values = np.sum(train_accel_values, axis=-1)
@@ -24,8 +23,8 @@ if __name__ == "__main__":
     model = Sequential(
         (
             model_input,
-            Dense(256, activation="relu"), 
-            Dense(32, activation="relu"), 
+            Dense(256, activation="relu"),
+            Dense(32, activation="relu"),
             Dense(1, activation="relu"),
         )
     )
@@ -34,12 +33,9 @@ if __name__ == "__main__":
 
     # import pdb;pdb.set_trace()
     model.compile(
-        optimizer="adam", 
+        optimizer="adam",
         loss=tf.keras.losses.MeanSquaredError(),
         metrics=["accuracy"]
     )
 
     model.fit(train_accel_values, train_pwm_values, epochs=10000)
-    
-
-    import pdb;pdb.set_trace()
