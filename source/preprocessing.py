@@ -1,6 +1,4 @@
 import numpy as np
-import data_io
-import ctypes
 
 def histedges_equalN(x, nbin):
     # https://stackoverflow.com/questions/39418380/histogram-with-equal-number-of-points-in-each-bin

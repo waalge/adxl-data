@@ -5,31 +5,8 @@ import os
 
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
 
 DATA_DIR = "./data/"
-RAW_DIR = os.path.join(DATA_DIR, "raw")
-
-
-def get_filenames():
-    return [f for f in os.listdir(RAW_DIR) if "2020" in f]
-
-
-def make_test_train_split():
-    """
-    Make test train split. Write to csvs
-    """
-    filenames = get_filenames()
-    x, y = zip(*[f.split("_") for f in filenames])
-    x_train, x_test, y_train, y_test = train_test_split(
-        x, y, test_size=0.2, random_state=345
-    )
-    df = pd.DataFrame({"timestamp": x_train, "pwm": y_train})
-    path_to_file = os.path.join(DATA_DIR, "train.csv")
-    df.to_csv(path_to_file, index=False)
-    df = pd.DataFrame({"timestamp": x_test, "pwm": y_test})
-    path_to_file = os.path.join(DATA_DIR, "test.csv")
-    df.to_csv(path_to_file, index=False)
 
 
 def benchmark_csv(yhat):
@@ -60,6 +37,4 @@ def demo_benchmark():
 
 
 if __name__ == "__main__":
-    # make_test_train_split
-    make_test_train_split()
     demo_benchmark()
