@@ -42,16 +42,25 @@ def make_test_train_split():
 
 def get_dataset(path_to_csv):
     df = pd.read_csv(path_to_csv)
-    files = [os.path.join(RAW_DIR, f"{row.timestamp}_{row.pwm}") for row in df.itertuples()]
-    accel_values = np.array([np.fromfile(fx, dtype=ctypes.c_int16).reshape((-1, 3)) for fx in files])
-    pwm_values = np.array([int(fx.split("_")[-1]) for fx in files], dtype=ctypes.c_int16)
+    files = [
+        os.path.join(RAW_DIR, f"{row.timestamp}_{row.pwm}") for row in df.itertuples()
+    ]
+    accel_values = np.array(
+        [np.fromfile(fx, dtype=ctypes.c_int16).reshape((-1, 3)) for fx in files]
+    )
+    pwm_values = np.array(
+        [int(fx.split("_")[-1]) for fx in files], dtype=ctypes.c_int16
+    )
     return pwm_values, accel_values
+
 
 def get_train_set():
     return get_dataset(TRAIN_CSV)
 
+
 def get_test_set():
     return get_dataset(TEST_CSV)
+
 
 def get_datasets(optional=False):
     return [*get_train_set(), *get_test_set()]

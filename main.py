@@ -4,6 +4,7 @@ from models.v1 import main_hist
 
 from utils import data_io
 
+
 def setup():
     if not os.path.isfile(data_io.RAW_ZIP):
         raise FileNotFoundError("Can't find raw.zip file of dataset")

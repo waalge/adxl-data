@@ -12,9 +12,7 @@ import scipy as sp
 import matplotlib.pyplot as plt
 
 
-DATA_DIR = "./data/"
-RAW_ZIP = os.path.join(DATA_DIR, "raw.zip")
-RAW_DIR = os.path.join(DATA_DIR, "raw")
+from utils.data_io import RAW_DIR
 
 
 def get_array(path_to_file):
@@ -25,9 +23,7 @@ def get_array(path_to_file):
     Returns:
         (:obj:`np.array`) of shape [800, 3] where the last index corresponds to signal in x,y, and z dimensions respectively
         """
-    with open(path_to_file, "rb") as fh:
-        vals = fh.read()
-    return np.frombuffer(vals, dtype=ctypes.c_int16).reshape((-1, 3))
+    return np.fromfile(path_to_file, dtype=ctypes.c_int16).reshape((-1, 3))
 
 
 def plot_window(signal, N):
@@ -56,10 +52,10 @@ def show_graph(path_to_file):
 def get_filenames(sort=False):
     """If sort, sort by signals with most power"""
     filenames = [f for f in os.listdir(RAW_DIR) if "2020" in f]
-    if not sort:
-        np.random.shuffle(filenames)
-        return filenames
-    return sorted(filenames, key=(lambda x: int(x.split("_")[-1])))
+    if sort:
+        return sorted(filenames, key=(lambda x: int(x.split("_")[-1])))
+    np.random.shuffle(filenames)
+    return filenames
 
 
 def main():
@@ -74,12 +70,5 @@ def main():
         show_graph(path_to_file)
 
 
-def unzip_raw():
-    with zipfile.ZipFile(RAW_ZIP, "r") as zip_ref:
-        zip_ref.extractall(DATA_DIR)
-
-
 if __name__ == "__main__":
-    if not os.path.isdir(RAW_DIR):
-        unzip_raw()
     main()

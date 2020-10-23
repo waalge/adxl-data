@@ -10,10 +10,13 @@ from .preprocessing import PreproccessorHist
 
 import utils.data_io as data_io
 
+
 def run():
 
     # Load the training and validation datasets
-    train_pwm_values, train_accel_values, test_pwm_values, test_accel_values = data_io.get_datasets()
+    train_pwm_values, train_accel_values, test_pwm_values, test_accel_values = (
+        data_io.get_datasets()
+    )
 
     # Create histograms of the acceleration magnitudes using nbins histrogram bins
     # The bin withss are chosen such that for the training dataset there are an equal number of
@@ -37,14 +40,16 @@ def run():
     )
     model.summary()
 
-    model.compile(
-        optimizer="adam",
-        loss=tf.keras.losses.MeanSquaredError(),
+    model.compile(optimizer="adam", loss=tf.keras.losses.MeanSquaredError())
+    model.fit(
+        pp_train_accel_values,
+        train_pwm_values,
+        epochs=30,
+        validation_data=(pp_test_accel_values, test_pwm_values),
     )
-    model.fit(pp_train_accel_values, train_pwm_values, epochs=30, validation_data=(pp_test_accel_values, test_pwm_values))
 
     # create a histogram of abs errors from the validation dataset
-    predict_pwm = model.predict(pp_test_accel_values)[:,0]
+    predict_pwm = model.predict(pp_test_accel_values)[:, 0]
     predict_diff = np.abs(predict_pwm - test_pwm_values)
 
     print("\nHistogram of ABS errors for validation data:")

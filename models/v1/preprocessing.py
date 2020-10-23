@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def histedges_equalN(x, nbin):
     # https://stackoverflow.com/questions/39418380/histogram-with-equal-number-of-points-in-each-bin
     npt = len(x)

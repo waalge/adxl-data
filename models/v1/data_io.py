@@ -10,8 +10,12 @@ def get_data_arrays(directory):
     """
 
     files = glob.glob(os.path.join(directory, "*"))
-    accel_values = np.array([np.fromfile(fx, dtype=ctypes.c_int16).reshape((-1, 3)) for fx in files])
-    pwm_values = np.array([int(fx.split("_")[-1]) for fx in files], dtype=ctypes.c_int16)
+    accel_values = np.array(
+        [np.fromfile(fx, dtype=ctypes.c_int16).reshape((-1, 3)) for fx in files]
+    )
+    pwm_values = np.array(
+        [int(fx.split("_")[-1]) for fx in files], dtype=ctypes.c_int16
+    )
 
     return pwm_values, accel_values
 
@@ -30,4 +34,9 @@ def get_datasets(directory, train_ratio=0.9):
     train_indices = indices[:N_train]
     test_indices = indices[N_train:]
 
-    return pwm_values[train_indices], accel_values[train_indices, :, :], pwm_values[test_indices], accel_values[test_indices, :, :]
+    return (
+        pwm_values[train_indices],
+        accel_values[train_indices, :, :],
+        pwm_values[test_indices],
+        accel_values[test_indices, :, :],
+    )
